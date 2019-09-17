@@ -1,7 +1,7 @@
 class Tile
-    def initialize(value, given)
+    def initialize(value)
         @value = value
-        @given = given
+        # @given = given
     end
 
     def to_s
