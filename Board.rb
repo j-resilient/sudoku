@@ -1,5 +1,7 @@
+# Next figure out coloring in rendering
+
 require_relative "Tile.rb"
-require 'byebug'
+
 class Board
     def initialize
         @grid = self.from_file
