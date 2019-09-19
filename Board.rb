@@ -9,9 +9,7 @@ class Board
         grid = []
         rows = File.readlines("puzzles/sudoku1_almost.txt")
         rows.each do |row|
-            grid << row.chomp.split("").map do |char|
-                Tile.new(char)
-            end
+            grid << row.chomp.split("").map { |char| Tile.new(char) }
         end
         grid
     end
@@ -27,10 +25,16 @@ class Board
             puts if (row_idx + 1) % 3 == 0
         end
     end
+
+    # broken
+    def solved?
+        @grid.none? { |row| row.include?('0') }
+    end
 end
 
 if $PROGRAM_NAME == __FILE__
     board = Board.new
     board.from_file
     board.render
+    puts board.solved?
 end
