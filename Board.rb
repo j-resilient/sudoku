@@ -1,5 +1,3 @@
-# Next figure out coloring in rendering
-
 require_relative "Tile.rb"
 
 class Board
