@@ -45,6 +45,7 @@ class Board
     def solved?
         return false if self.remaining_zeroes? == true
         return false if !self.rows_complete?
+        return false if !self.columns_complete?
         true
     end
 
@@ -56,15 +57,22 @@ class Board
     end
 
     def rows_complete?
-        @grid.all? { |row| check_row(get_array_of_values(row)) }
+        @grid.all? { |row| includes_all_digits?(row) }
     end
 
-    def check_row(row)
-        (1..9).all? { |num| row.include?(num.to_s) }
+    def columns_complete?
+        (0...9).all? do |col_idx|
+            col = []
+            @grid.each { |row| col << row[col_idx] }
+            includes_all_digits?(col)
+        end
     end
 
-    # rows contain 0-9
-    # columns contain 0-9
+    def includes_all_digits?(tiles)
+        numbers = get_array_of_values(tiles)
+        (1..9).all? { |num| numbers.include?(num.to_s) }
+    end
+
     # squares contain 0-9
 
     def update_tile(position, el)
