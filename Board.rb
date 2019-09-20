@@ -43,14 +43,13 @@ class Board
     end
 
     def solved?
-        # return false if self.remaining_zeroes? == true
-        # return false if !self.rows_complete?
-        # return false if !self.columns_complete?
+        return false if self.remaining_zeroes? == true
+        return false if !self.rows_complete?
+        return false if !self.columns_complete?
         return false if !self.squares_complete?
         true
     end
 
-    # check if any numbers have not been changed
     def remaining_zeroes?
         @grid.any? do |row| 
             row.any? { |num| num.to_s == '0'}
@@ -72,25 +71,17 @@ class Board
     def squares_complete?
         squares = Array.new(9) { [] }
         flat_grid = @grid.flatten
-        idx = 0
         arr_idx = 0
-        while idx < flat_grid.length
-            squares[arr_idx] += flat_grid[idx...(idx + 3)] 
+
+        while !flat_grid.empty? 
+            squares[arr_idx] += flat_grid.shift(3)
 
             if squares[arr_idx].length == 9
-                print get_array_of_values(squares[arr_idx])
-                puts
                 return false if !includes_all_digits?(squares[arr_idx])
                 squares.delete_at(arr_idx)
             else
-                if arr_idx == 2
-                    arr_idx = 0
-                else
-                    arr_idx += 1
-                end
+                arr_idx == 2 ? arr_idx = 0 : arr_idx += 1
             end
-
-            idx += 3
         end
         
         true
