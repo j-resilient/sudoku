@@ -12,6 +12,10 @@ class Board
     def []=(position, el)
         @grid[position] = el
     end
+
+    def get_array_of_values(tiles)
+        tiles.map { |tile| tile.value }
+    end
     
     def initialize
         @grid = self.from_file
@@ -39,10 +43,29 @@ class Board
     end
 
     def solved?
-        @grid.none? do |row| 
+        return false if self.remaining_zeroes? == true
+        return false if !self.rows_complete?
+        true
+    end
+
+    # check if any numbers have not been changed
+    def remaining_zeroes?
+        @grid.any? do |row| 
             row.any? { |num| num.to_s == '0'}
         end
     end
+
+    def rows_complete?
+        @grid.all? { |row| check_row(get_array_of_values(row)) }
+    end
+
+    def check_row(row)
+        (1..9).all? { |num| row.include?(num.to_s) }
+    end
+
+    # rows contain 0-9
+    # columns contain 0-9
+    # squares contain 0-9
 
     def update_tile(position, el)
         @grid[position[0]][position[1]] = el

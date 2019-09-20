@@ -1,6 +1,6 @@
 require 'colorize'
 class Tile
-    attr_reader :given
+    attr_reader :given, :value
     attr_writer :value
 
     def initialize(value)
