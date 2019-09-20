@@ -1,7 +1,18 @@
+# if factory methods involve creating a little class to create the grid,
+# move [] and []= so that I can use them in update_tile
+
 require_relative "Tile.rb"
 require 'byebug'
 
 class Board
+    def [](position)
+        @grid[position[0]][position[1]]
+    end
+
+    def []=(position, el)
+        @grid[position] = el
+    end
+    
     def initialize
         @grid = self.from_file
     end
@@ -32,6 +43,11 @@ class Board
             row.any? { |num| num.to_s == '0'}
         end
     end
+
+    def update_tile(position, el)
+        @grid[position[0]][position[1]] = el
+    end
+
 end
 
 if $PROGRAM_NAME == __FILE__
