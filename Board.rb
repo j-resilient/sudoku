@@ -1,4 +1,5 @@
 require_relative "Tile.rb"
+require 'byebug'
 
 class Board
     def initialize
@@ -26,9 +27,10 @@ class Board
         end
     end
 
-    # broken
     def solved?
-        @grid.none? { |row| row.include?('0') }
+        @grid.none? do |row| 
+            row.any? { |num| num.to_s == '0'}
+        end
     end
 end
 
