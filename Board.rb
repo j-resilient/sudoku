@@ -43,9 +43,10 @@ class Board
     end
 
     def solved?
-        return false if self.remaining_zeroes? == true
-        return false if !self.rows_complete?
-        return false if !self.columns_complete?
+        # return false if self.remaining_zeroes? == true
+        # return false if !self.rows_complete?
+        # return false if !self.columns_complete?
+        return false if !self.squares_complete?
         true
     end
 
@@ -68,12 +69,37 @@ class Board
         end
     end
 
+    def squares_complete?
+        squares = Array.new(9) { [] }
+        flat_grid = @grid.flatten
+        idx = 0
+        arr_idx = 0
+        while idx < flat_grid.length
+            squares[arr_idx] += flat_grid[idx...(idx + 3)] 
+
+            if squares[arr_idx].length == 9
+                print get_array_of_values(squares[arr_idx])
+                puts
+                return false if !includes_all_digits?(squares[arr_idx])
+                squares.delete_at(arr_idx)
+            else
+                if arr_idx == 2
+                    arr_idx = 0
+                else
+                    arr_idx += 1
+                end
+            end
+
+            idx += 3
+        end
+        
+        true
+    end
+
     def includes_all_digits?(tiles)
         numbers = get_array_of_values(tiles)
         (1..9).all? { |num| numbers.include?(num.to_s) }
     end
-
-    # squares contain 0-9
 
     def update_tile(position, el)
         @grid[position[0]][position[1]] = el
