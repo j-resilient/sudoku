@@ -97,10 +97,3 @@ class Board
     end
 
 end
-
-if $PROGRAM_NAME == __FILE__
-    board = Board.new
-    board.from_file
-    board.render
-    puts board.solved?
-end
