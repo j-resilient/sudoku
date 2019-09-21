@@ -11,7 +11,7 @@ class Game
         until @board.solved?
             # debugger
             @board.render
-            get_input
+            position, value = get_input
             break
             #update tiles
         end
@@ -19,8 +19,8 @@ class Game
 
     def get_input
         position = get_position
-        # prompt for and get value
-        #validate
+        value = get_value
+        [position, value]
     end
 
     def get_position
@@ -44,6 +44,15 @@ class Game
 
     def format_position(pos)
         pos.map { |num| num.to_i }
+    end
+
+    def get_value
+        print "Please enter a value (i.e. a digit 1-9)"
+        validate_value(gets.chomp.to_i)
+    end
+
+    def validate_value(value)
+        return value if value > 0 && value <= 9
     end
 end
 
