@@ -12,15 +12,14 @@ class Game
             # debugger
             @board.render
             position, value = get_input
-            break
-            #update tiles
+            @board.update_tile(position, value)
         end
+        @board.render
+        puts "You win!"
     end
 
     def get_input
-        position = get_position
-        value = get_value
-        [position, value]
+        [get_position, get_value]
     end
 
     def get_position
@@ -30,29 +29,45 @@ class Game
     end
 
     def validate_position(position)
-        pos = position.delete(",").split("")
-        if pos.length == 2 && acceptable_numbers?(pos)
-            return format_position(pos)
-        else
-            get_position
+        get_position if position.length != 3 || !position.include?(",")
+        pos = format_position(position)
+        pos = check_digits(pos)
+        return pos if tile_given?(pos)
+        get_position
+    end
+
+    def format_position(position)
+        position.delete(",").split("")
+    end
+
+    def check_digits(pos)
+        pos.map do |num| 
+            if num =~ /[[:digit:]]/ && acceptable_number?(num)
+                num.to_i
+            else
+                get_position
+            end
         end
     end
 
-    def acceptable_numbers?(pos)
-        pos.all? { |num| num =~ /[[:digit:]]/ && num.to_i < 9 && num.to_i >= 0 }
+    def acceptable_number?(pos)
+        # pos.all? { |num| num =~ /[[:digit:]]/ && num.to_i < 9 && num.to_i >= 0 }
+        pos.to_i < 9 && pos.to_i >= 0
     end
 
-    def format_position(pos)
-        pos.map { |num| num.to_i }
+    def tile_given?(pos)
+        @board[pos].given
     end
 
     def get_value
-        print "Please enter a value (i.e. a digit 1-9)"
-        validate_value(gets.chomp.to_i)
+        print "Please enter a value (i.e. a digit 1-9): "
+        validate_value(gets.chomp)
     end
 
     def validate_value(value)
-        return value if value > 0 && value <= 9
+        value.to_i if value =~ /[[:digit:]]/
+        return value if value.to_i > 0 && value.to_i <= 9
+        get_value
     end
 end
 

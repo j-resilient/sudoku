@@ -25,12 +25,19 @@ class Board
         grid = []
         rows = File.readlines("puzzles/sudoku1_almost.txt")
         rows.each do |row|
-            grid << row.chomp.split("").map { |char| Tile.new(char) }
+            grid << row.chomp.split("").map do |char| 
+                if char.to_i != 0
+                    Tile.new(char, false)
+                else
+                    Tile.new(char, true)
+                end
+            end
         end
         grid
     end
 
     def render
+        system("clear")
         puts
         @grid.each_with_index do |row, row_idx|
             row.each_with_index do |col, col_idx|
@@ -92,8 +99,8 @@ class Board
         (1..9).all? { |num| numbers.include?(num.to_s) }
     end
 
-    def update_tile(position, el)
-        @grid[position[0]][position[1]] = el
+    def update_tile(position, value)
+        @grid[position[0]][position[1]] = Tile.new(value, true)
     end
 
 end
